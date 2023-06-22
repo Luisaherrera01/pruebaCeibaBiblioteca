@@ -18,7 +18,7 @@ public class PrestamoService implements ServicesInterface<Prestamo> {
     @Override
     public Prestamo registrar(String isbn, String identificacionUsuario, Integer tipoUsuario, LocalDate fechaMaximaDevolucion) throws Exception {
         validarUsuarioPrestamo(identificacionUsuario, tipoUsuario);
-        calcularFechaMaximaDevolucion(tipoUsuario);
+        fechaMaximaDevolucion=calcularFechaMaximaDevolucion(tipoUsuario);
 
         Prestamo prestamo = new Prestamo();
         prestamo.setIsbn(isbn);
@@ -36,13 +36,16 @@ public class PrestamoService implements ServicesInterface<Prestamo> {
         }
     }
 
-    private void calcularFechaMaximaDevolucion(Integer tipoUsuario) throws Exception {
+    private LocalDate calcularFechaMaximaDevolucion(Integer tipoUsuario) throws Exception {
         DateTimeFormatter formateoFecha = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate fechaActual = LocalDate.now();
 
         LocalDate fechaMaximaDevolucion;
         if (tipoUsuario == 1) {
+            System.out.println("entramos");
             fechaMaximaDevolucion = fechaActual.plusDays(10);
+            System.out.println(fechaActual.plusDays(10));
+            System.out.println(fechaMaximaDevolucion);
         } else if (tipoUsuario == 2) {
             fechaMaximaDevolucion = fechaActual.plusDays(8);
         } else if (tipoUsuario == 3) {
@@ -51,11 +54,15 @@ public class PrestamoService implements ServicesInterface<Prestamo> {
             throw new Exception("Tipo de usuario no permitido en la biblioteca");
         }
 
-        while (fechaMaximaDevolucion.getDayOfWeek() == DayOfWeek.SATURDAY ||
+       /* while (fechaMaximaDevolucion.getDayOfWeek() == DayOfWeek.SATURDAY ||
                 fechaMaximaDevolucion.getDayOfWeek() == DayOfWeek.SUNDAY) {
 
             fechaMaximaDevolucion = fechaActual.plusDays(1);
-        }
+        }*/
+        System.out.println(fechaMaximaDevolucion);
+        String fechaFormateada = fechaMaximaDevolucion.format(formateoFecha);
+        System.out.println(fechaFormateada);
+        return fechaMaximaDevolucion;
 
     }
 

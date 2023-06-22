@@ -19,7 +19,7 @@ public class Prestamo {
     @Column(nullable = false)
     private Integer tipoUsuario;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDate fechaMaximaDevolucion;
 
 
